@@ -16,10 +16,26 @@ struct ListNode_T
 	struct ListNode_T* mPtrNextNode;
 };
 typedef struct ListNode_T ListNode;
+typedef ListNode* ptrListNode;
 
-void Insert(ListNode**, char);
-BOOL Delete(ListNode**, char);
-void DeleteList(ListNode**);
+struct List
+{
+	ptrListNode mPtrNode;
+	
+	void (*Insert)(struct List*, ptrListNode*, char);
+	void (*Delete)(struct List*, ptrListNode*, char);
+	void (*Clear) (struct List*, ptrListNode*);
+	BOOL (*IsEmpty)(struct List*, ListNode*);
+	void (*PrintList)(struct List* ListNode*);
+};
+typedef struct List List;
+void CtorList(List* mList)
+{
+}
+
+void Insert(ptrListNode*, char);
+BOOL Delete(ptrListNode*, char);
+void DeleteList(ptrListNode*);
 
 BOOL IsEmpty(ListNode*);
 void PrintList(ListNode*);
