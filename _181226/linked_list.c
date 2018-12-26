@@ -3,6 +3,8 @@
 #include <ctype.h>
 
 #define M_SIZE(__MAType__) sizeof(__MAType__)
+#define V_STRUCT(__MASpecifier__) \
+	struct __MASpecifier__##_T
 
 #define FALSE 0
 #define TRUE 1
@@ -13,8 +15,6 @@ struct ListNode_T
 	char mData;
 	struct ListNode_T* mPtrNextNode;
 };
-
-
 typedef struct ListNode_T ListNode;
 
 void Insert(ListNode**, char);
