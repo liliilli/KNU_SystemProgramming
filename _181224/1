@@ -1,0 +1,6 @@
+#include <stdio.h>
+
+void bill(int arg)
+{
+	printf("Bill : you passed %d\n", arg);
+}
