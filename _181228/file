@@ -1,0 +1,18 @@
+.: 
+drwxr-xr-x    3 swedu    swedu        4096 Dec 28 11:37 .
+drwxr-xr-x    7 swedu    root         4096 Dec 28 08:53 ..
+-rw-r--r--    1 swedu    swedu        3680 Dec 28 11:36 myls.c
+-rwxr-xr-x    1 swedu    swedu       13424 Dec 28 11:34 myls
+-rwxr-xr-x    1 swedu    swedu       13288 Dec 28 11:34 ls2
+-rw-r--r--    1 swedu    swedu           0 Dec 28 11:37 file
+-rw-r--r--    1 swedu    swedu        5136 Dec 28 11:34 ls2.o
+-rw-r--r--    1 swedu    swedu         843 Dec 28 09:35 ls1.c
+-rw-r--r--    1 swedu    swedu         284 Dec 28 09:50 filesize.c
+drwxr-xr-x    2 swedu    swedu        4096 Dec 28 09:41 empty_dir
+-rw-r--r--    1 swedu    swedu         211 Dec 28 11:33 Makefile
+-rw-r--r--    1 swedu    swedu       16384 Dec 28 11:37 .myls.c.swp
+-rw-r--r--    1 swedu    swedu        5592 Dec 28 11:34 myls.o
+-rw-r--r--    1 swedu    swedu           0 Dec 28 09:07 test
+-rwxr-xr-x    1 swedu    swedu        8496 Dec 28 09:50 filesize
+-rw-r--r--    1 swedu    swedu        3263 Dec 28 10:58 ls2.c
+-rwxr-xr-x    1 swedu    swedu        8576 Dec 28 09:35 ls1
