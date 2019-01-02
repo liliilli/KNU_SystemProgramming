@@ -1,0 +1,8 @@
+  File: ./demodir/d1
+  Size: 4096      	Blocks: 8          IO Block: 4096   directory
+Device: 811h/2065d	Inode: 15601154    Links: 2
+Access: (0755/drwxr-xr-x)  Uid: ( 1000/   swedu)   Gid: ( 1000/   swedu)
+Access: 2019-01-02 09:14:45.144067282 +0900
+Modify: 2019-01-02 09:14:33.312270168 +0900
+Change: 2019-01-02 09:14:33.312270168 +0900
+ Birth: -
