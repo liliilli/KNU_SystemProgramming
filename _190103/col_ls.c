@@ -61,11 +61,6 @@ void ProcessLs(const char* iDirName)
 	struct dirent** entryList = NULL;
 	int entryCount = scandir(iDirName, &entryList, NULL, alphasort);
 	if (entryCount < 0) { perror("scandir"); }
-	else
-	{
-		int i = 0;
-		while (i < entryCount) { printf("%s\n", entryList[i++]->d_name); }
-	}
 
 	/* Calculate column item length. */
 	int maxColItem = 1;
@@ -87,14 +82,18 @@ void ProcessLs(const char* iDirName)
 		unsigned sumLength = 0;
 		for (int i = 0; i < entryCount; ++i) { sumLength += colMaxLenList[i]; }
 
+		/* Check thie iteration does not satisfies boundary condition. */
+		/* Need to iterate maximum satisfied condition column count. */
 		if (outFlag == 1) { break; }
 		if (sumLength > winCol) 
 		{ 
+			/* If failed at first time, just get out of the loop. */
 			if (maxColItem == 1) { break; }
 			maxColItem -= 1;
 			outFlag = 1; 
 		}
 
+		/* If column count hits entryCount, just get out of the loop. */
 		if (maxColItem == entryCount) { break; } else { maxColItem += 1; }
 	}
 	while (1);
@@ -130,14 +129,16 @@ void ProcessLs(const char* iDirName)
 
 void GetPrintScreenSize(unsigned int* row, unsigned int* col)
 {
+	/* Get winsize struct from default console window. */
 	struct winsize sizeBuffer;
 	if (ioctl(0, TIOCGWINSZ, &sizeBuffer) == -1)
-	{
+	{	/* If failed to getting terminal console info, return with defaults. */
 		*row = 0;
 		*col = 0;
 		return;
 	}
 	
+	/* Update value */
 	*row = sizeBuffer.ws_row;
 	*col = sizeBuffer.ws_col;
 }

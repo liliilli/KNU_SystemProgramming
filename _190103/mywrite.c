@@ -1,8 +1,9 @@
 /*
  * @file : mywrite.c
- * @author : Jongmin Yun
- * @date : 2018-01-03 11:58
- * @description : 
+ * @author : 2012104208 Jongmin Yun
+ * @date : 2018-01-03 11:58 Created
+ *         2018-01-03 23:39 Update comment
+ * @description : Chatting program with other client side.
  * 
  * Usage : ./mywrite name dest_tty_name
  */
@@ -28,9 +29,6 @@ BOOL CheckCurrentUsername(const char* iUserName)
 	const uid_t id = geteuid();
 	struct passwd* userPw = getpwuid(id);
 
-#ifndef NDEBUG
-	printf("[DEBUG] : Current user name : %s\n", userPw->pw_name); 
-#endif
 	if (strcmp(iUserName, userPw->pw_name) != 0) { return FAILURE; }
 	return SUCCESS;
 }
@@ -71,16 +69,20 @@ int main(int argc, char** argv)
 		struct tm buf;
 		buf = *localtime(&timeStmp);
 
+		/* Make log header for each message */
 		memset(headerFormat, '\0', 512);
 		sprintf(headerFormat, "\nMessage from %s at %d : %d ...\n\n",
 			argv[1],
 			buf.tm_hour,
 			buf.tm_min);
 
+		/* Write header log to another /pts/N */
 		if (write(fd, headerFormat, strlen(headerFormat)) == -1) { break; }
+		/* Write content */
 		if (write(fd, stringBuffer, strlen(stringBuffer)) == -1) { break; }
 	}
 
+	/* Write `EOF` when exist chatting with CTRL+D. */
 	if (write(fd, "EOF", strlen("EOF")) == -1) { exit(1); }
 	close(fd);
 }
