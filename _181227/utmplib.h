@@ -16,9 +16,23 @@
 typedef int t_fd_index;
 
 /*
- * @brief Open 
+ * @brief Open utmp with path to read utmp file.
+ * @return File descriptor of utmp
  */
 t_fd_index		utmp_open(const char* iFileName);
+
+/*
+ * @brief Get next utmp information. If failed, return null.
+ */
 struct utmp*	utmp_next();
+
+/*
+ * @brief Release utmp buffer and read utmp file again.
+ * @reutrn utmp information count.
+ */
 int						utmp_reload();
+
+/*
+ * @brief Close and release utmp buffer.
+ */
 void					utmp_close();

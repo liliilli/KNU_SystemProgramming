@@ -1,64 +1,78 @@
+/*
+ * @file : mywho.c
+ * @author : Jongmin Yun
+ * @datetime : 2018-12-27 23:49 Updated.
+ * @description : The program immitiating `who` program of -nixes.
+ */
+
 #include <stdio.h>	/* ANSI C Header file */
+#include <stdlib.h> /* ANSI C library file */
+#include <time.h>		/* Time function */
+
 #include <utmp.h>		/* User login information on now */
 #include <fcntl.h>  /* Manipulate file decriptor */
 #include <unistd.h> /* POSIX standard header file */
-#include <stdlib.h> /* ANSI C library file */
-#include <time.h>
+
 #include "utmplib.h"
 
 #define SHOWHOST
-#define FAILED_TO_READ -1
 
-typedef struct utmp Utmp;
-typedef Utmp*				TPtrUtmp;
+enum EErrorCode
+{ /* Use this at everywhere which general error code is -1. */
+  E_Failed = -1
+};
 
-void ShowInfo(TPtrUtmp);
+/* @brief Print information of utmp. */ 
+void ShowInfo(struct utmp*);
+/* @brief Print time string as 'YYYY-MM-DD HH-MM'. */
 void ShowTime(time_t iSec);
 
 int main(int argc, char** argv)
 {
-	struct utmp* ptr_utmpbuff;
+ 	struct utmp* ptrUtmpBuffer = NULL;
 
-	if (utmp_open(UTMP_FILE) == -1)
-	{ /* If program filed to read /var/run/utmp... */
-		perror(UTMP_FILE);
-		return 0;
-	}
+  /* Try open utmp file as default utmp file path. */
+  if (utmp_open(UTMP_FILE) == E_Failed)
+  { /* If program filed to read /var/run/utmp, or specified default utmp file,
+     * just print UTMP_FILE (default utmp path) and abort. */
+    perror(UTMP_FILE);
+    exit(1);
+  }
 
-	while ((ptr_utmpbuff = utmp_next()) != NULL)
-	{
-		ShowInfo(ptr_utmpbuff);
-	}
+  /* Try get next user log-in information. 
+   * If succeeded, show information of retrieved user. */
+  while ((ptrUtmpBuffer = utmp_next()) != NULL) { ShowInfo(ptrUtmpBuffer); }
 
-	utmp_close();
-	return 0;
+  /* utmp buffer must be released manually. */
+  utmp_close();
+  return 0;
 }
 
-char* gStrFmtNameLine = "%-8.8s ";
+void ShowInfo(struct utmp* ptrUtmpBuffer)
+{ /* If retrieved utmp information type is not user, do nothing. */
+  if (ptrUtmpBuffer->ut_type != USER_PROCESS) { return; }
 
-void ShowInfo(TPtrUtmp ptrUtmpBuffer)
-{
-	if (ptrUtmpBuffer->ut_type != USER_PROCESS) { return; }
-
-	printf(gStrFmtNameLine, ptrUtmpBuffer->ut_name);
-	printf(gStrFmtNameLine, ptrUtmpBuffer->ut_line);
-	ShowTime(ptrUtmpBuffer->ut_time);
+  printf("%-8.8s ", ptrUtmpBuffer->ut_name);
+  printf("%-8.8s ", ptrUtmpBuffer->ut_line);
+  /* Unix time_t (implementation dependent) can be created from int32_t. 
+   * utmp::ut_time (timestamp second) is int32_t. */
+  ShowTime(ptrUtmpBuffer->ut_time);
 #if defined(SHOWHOST)
-	if (ptrUtmpBuffer->ut_host[0] != '\0')
-	{
-		printf("(%s)", ptrUtmpBuffer->ut_host);
-	}
+  if (ptrUtmpBuffer->ut_host[0] != '\0')
+  {
+    printf("(%s)", ptrUtmpBuffer->ut_host);
+  }
 #endif
-	puts("");
+  puts("");
 }
 
 void ShowTime(time_t iSec)
 {
-	struct tm* ptr_tm = localtime(&iSec);
+	struct tm* ptrTm = localtime(&iSec);
 	printf("%04d-%02d-%02d %02d:%02d ", 
-			ptr_tm->tm_year + 1900, 
-			ptr_tm->tm_mon + 1,
-			ptr_tm->tm_mday,
-			ptr_tm->tm_hour,
-			ptr_tm->tm_min);
+			ptrTm->tm_year + 1900, 
+			ptrTm->tm_mon + 1,
+			ptrTm->tm_mday,
+			ptrTm->tm_hour,
+			ptrTm->tm_min);
 }

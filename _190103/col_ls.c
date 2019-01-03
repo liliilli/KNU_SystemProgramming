@@ -1,5 +1,12 @@
 /*
- *
+ * @file : col_ls.c
+ * @author : 2012104208_Jongmin Yun
+ * @date : 2018-01-03 14:15 Created
+ *         2018-01-03 22:51 Add comments
+ * @description : Display entries of given directory, doing alignment size
+ * of entries like a `ls directory`
+ * 
+ * Usage : `./col_ls` or `./col_ls directory_path`
  */
 
 #include <stdio.h>
@@ -33,8 +40,8 @@ int main(int argc, char** argv)
 			ProcessLs(argv[i]);
 		}
 	}
+	return 0;
 }
-
 
 void ProcessLs(const char* iDirName)
 {
@@ -103,6 +110,7 @@ void ProcessLs(const char* iDirName)
 		strcat(strFormat, intStr);
 		strcat(strFormat, "s ");
 
+		/* Print */
 		printf(strFormat, entryList[i]->d_name);
 		if ((i + 1) % maxColItem == 0) { printf("\n"); }
 	}
