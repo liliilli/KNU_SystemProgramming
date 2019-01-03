@@ -1,0 +1,8 @@
+-rwxr-sr-x  1 root   tty        14328  1월 17  2018 bsd-write
+-rwxr-xr-x  1 root   root          61  4월 10  2018 lowriter
+-rwxr-xr-x  1 root   root       14888  7월  6  2016 sg_compare_and_write
+-rwxr-xr-x  1 root   root       19272  7월  6  2016 sg_write_buffer
+-rwxr-xr-x  1 root   root       14696  7월  6  2016 sg_write_long
+-rwxr-xr-x  1 root   root       19048  7월  6  2016 sg_write_same
+-rwxr-xr-x  1 root   root       18920  7월  6  2016 sg_write_verify
+lrwxrwxrwx  1 root   root          23  8월 24 22:28 write -> /etc/alternatives/write
