@@ -1,0 +1,25 @@
+Char   0 is H code 72
+Char   1 is e code 101
+Char   2 is l code 108
+Char   3 is l code 108
+Char   4 is o code 111
+Char   5 is   code 32
+Char   6 is w code 119
+Char   7 is o code 111
+Char   8 is r code 114
+Char   9 is l code 108
+Char  10 is d code 100
+Char  11 is ! code 33
+Char  12 is 
+ code 10
+Char  13 is  code 27
+Char  14 is [ code 91
+Char  15 is A code 65
+Char  16 is  code 27
+Char  17 is [ code 91
+Char  18 is A code 65
+Char  19 is 
+ code 10
+Char  20 is q code 113
+Char  21 is 
+ code 10
