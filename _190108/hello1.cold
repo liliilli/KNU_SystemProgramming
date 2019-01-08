@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <curses.h>
+
+#define NOTUSE(__Expression__) ((void)__Expression__)
+#define NAMESPACE(__Specifier__) __Specifier__
+#define MACRO_PARSE(__LHS__, __RHS__) __LHS__ ## __RHS__
+#define MACRO_PARSE2(__LHS__, __RHS__) MACRO_PARSE(__LHS__, __RHS__)
+#define NAMESPACE_FUNCTION(__Specifier__, __Function__) \
+	MACRO_PARSE2(MACRO_PARSE2(NAMESPACE(__Specifier__), __), __Function__)
+
+void NAMESPACE_FUNCTION(curse, initialize)();
+void NAMESPACE_FUNCTION(curse)release();
+void NAMESPACE_FUNCTION(curse)clear();
+
+static const struct
+{
+	void (*Initialize)(void);
+	void (*Clear)(void);
+	void (*Release)(void);
+} NAMESPACE(curse) = {
+	NAMESPACE_FUNCTION(curse)initialize,
+	NAMESPACE_FUNCTION(curse)release,
+	NAMESPACE_FUNCTION(curse)clear
+};
+
+void NAMESPACE_FUNCTION(curse)initialize()
+{
+	initscr();
+	curse.Clear();
+}
+void NAMESPACE_FUNCTION(curse)release() { endwin(); }
+void NAMESPACE_FUNCTION(curse)clear()   { clear(); }
+
+int main(int argc, char** argv)
+{
+	NOTUSE(argc);
+	NOTUSE(argv);
+
+	curse.Initialize();
+	curse.Clear();
+
+	move(10, 20);
+	addstr("Hello, world!");
+	move(LINES-1, 0);
+
+	refresh();
+	getch();
+	curse.Release();
+
+	return 0;
+}
