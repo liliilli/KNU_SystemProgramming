@@ -16,12 +16,16 @@ void curse__clear();
 void curse__reverseMode(int);
 void curse__setCursor(int x, int y);
 void curse__swapBuffer();
+void curse__writeTo(int x, int y, const char*);
+void curse__moveWrite(int x, int y, const char*);
 
 static const struct
 {
 	void (*Initialize)(void);
 	void (*SetCursor)(int, int);
 	void (*Write)(const char*);
+	void (*WriteTo)(int, int, const char*);
+	void (*MoveWrite)(int, int, const char*);
 	void (*Clear)(void);
 	void (*Release)(void);
 	void (*SwapBuffer)(void);
@@ -30,6 +34,8 @@ static const struct
 	curse__initialize,
 	curse__setCursor,
 	curse__write,
+	curse__writeTo,
+	cusre__moveWrite,
 	curse__release,
 	curse__clear,
 	curse__swapBuffer,
