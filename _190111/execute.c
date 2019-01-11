@@ -12,7 +12,9 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/wait.h>
+
 #include "smsh.h"
+#include "HelperGlobal.h"
 
 int Execute(char** iArgv)
 {
@@ -20,14 +22,17 @@ int Execute(char** iArgv)
   int childInfo = -1;
 
   if (iArgv[0] == NULL) { return 0; }
-  if ((pid = fork()) == -1) { perror("fork"); }
+
+	pid = systm.ForkChild();
+	if (pid == -1) { perror("fork"); }
   else if (pid == 0)
   {
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
-    execvp(iArgv[0], iArgv);
-    perror("Cannot execute command");
-    exit(1);
+		// Restore defeault behaviour to SIGINT and SIGQUIT.
+		global.BindSIGINT(SIG_DFL);
+		global.BindSIGQUIT(SIG_DFL);
+		// Execute specified program and argument in child process.
+		systm.ExecuteProgram(iArgv[0], iArgv, M_NOTCHILD);
+		assert.NeverReachThisLine("");
   }
   else
   {

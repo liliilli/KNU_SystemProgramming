@@ -37,4 +37,10 @@ void   Fatal(char*, char*, int);
 // @return Status returned via wait, or -1 on error on fork() or wait() error.
 int    Execute(char** argv);
 
+int IsControlCommand(char*);
+int DoControlCommand(char**);
+int OkToExecute();
+
+int Process(char** iArgv);
+
 #endif // GAURD_SMSH_H

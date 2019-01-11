@@ -126,7 +126,7 @@ int system__ExecuteProgram(const char* iProgramPath, char* const iProgramArgs[],
 	}
 	else if (isChild == M_CHILD)
 	{
-		int childPid = fork();
+		int childPid = systm.ForkChild();
 		if (childPid == -1)
 		{
 			perror("Failed to create child");
@@ -153,3 +153,41 @@ void system__GetWaitStatus(const int iWstatus, int* iReturnedValue, int* iDumpFl
 	*iDumpFlag = (iWstatus & 0x80) >> 7;
 	*iSignalNumber = (iWstatus & 0x7F);
 }
+
+int system__ForkChild()
+{
+	return fork();
+}
+
+void assert__NeverReachThisLine(const char* iAdditionalMsg)
+{
+	if (iAdditionalMsg == NULL)
+	{
+		fprintf(stderr, 
+				"This code must not be reached by any process of this program.\n"); 
+	}
+	else
+	{
+		fprintf(stderr, 
+				"This code must not be reached by any process of this program. %s\n", 
+				iAdditionalMsg); 
+	}
+	exit(1);
+}
+
+void assert__Fatal(char* iS1, char* iS2, int n)
+{
+  fprintf(stderr, "Error : %s, %s\n", iS1, iS2);
+  exit(n);
+}
+
+void assert__Assert(int iResult, const char* iExpression, const char* iMsg)
+{
+	if (iResult == 0)
+	{
+		fprintf(stderr, "Failed assertion : %s, %s.\n", iExpression, iMsg);
+		exit(1);
+	}
+}
+
+

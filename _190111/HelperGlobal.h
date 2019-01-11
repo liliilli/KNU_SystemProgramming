@@ -59,13 +59,47 @@ int system__ExecuteProgram(const char* iProgramPath, char* const iProgramArgs[],
 // @param iWstatus wait status which is returned by child process when exit. 
 void system__GetWaitStatus(const int iWstatus, int* iReturnedValue, int* iDumpFlag, int* iSignalNumber); 
 
+// @brief Fork child process, parent process will get -1 (error) or child pid index.
+// Child pid will get 0 when creation is succeeded.
+int system__ForkChild();
+
 static const struct
 {
 	int (*ExecuteProgram)(const char*, char* const[], int);
 	void (*GetWaitStatus)(const int, int*, int*, int*);
+	int (*ForkChild)();
 } NAMESPACE(systm) = {
 	system__ExecuteProgram,
 	system__GetWaitStatus,
+	system__ForkChild,
+};
+
+// @brief Assert this code is never readched by any process of this application.
+// If reached, print error and exit abnormally with error status value.
+void assert__NeverReachThisLine(const char* iAdditionalMsg);
+
+// @brief Assert fatal error, with two error message and exit with status value.
+void assert__Fatal(char* iS1, char* iS2, int n);
+
+// @brief Assert with message.
+void assert__Assert(int iResult, const char* iExpression, const char* iMsg);
+
+#ifndef NDEBUG
+#define M_ASSERT(__Expression__, __Message__) \
+		assert.Assert(__Expression__, #__Expression__, __Message__)
+#else
+#define M_ASSERT(__Expression__, __Message__) (void)0;
+#endif
+
+static const struct
+{
+	void (*NeverReachThisLine)(const char*);
+	void (*Fatal)(char*, char*, int);
+	void (*Assert)(int, const char*, const char*);
+} NAMESPACE(assert) = {
+	assert__NeverReachThisLine,
+	assert__Fatal,
+	assert__Assert,
 };
 
 #endif /// GUARD_HELPERGLOBAL_H

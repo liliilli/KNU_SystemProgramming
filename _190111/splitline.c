@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "smsh.h"
+#include "HelperGlobal.h"
 
 // @brief Construct for strings.
 // @return String, this is never NULL.
@@ -52,6 +54,10 @@ char* NextCmd(char* iPrompt, FILE* iFp)
 
   // Replace last character to null.
   buf[pos] = '\0';
+
+#ifndef NDEBUG
+	printf("[DEBUG] %s\n", buf);
+#endif
   return buf;
 }
 
@@ -110,9 +116,12 @@ char** SplitLine(char* iLine)
 char* NewStr(char* iStart, int iLen)
 {
   char* rv = Emalloc(iLen + 1);
-  rv[1] = '\0';
+	memset(rv, '\0', iLen + 1);
 
   strncpy(rv, iStart, iLen);
+#ifndef NDEBUG
+	printf("[DEBUG:NewStr] rv : %s iStart : %s iLen : %d\n", rv, iStart, iLen);
+#endif
   return rv;
 }
 
@@ -132,7 +141,7 @@ void* Emalloc(size_t iByteSize)
   void* rv = NULL;
   if ((rv = malloc(iByteSize)) == NULL)
   {
-    Fatal("Out of memory!", "", 1);
+    assert.Fatal("Out of memory!", "", 1);
   }
   return rv;
 }
@@ -142,13 +151,8 @@ void* Erealloc(void* iPtrType, size_t iByteSize)
   void* rv = NULL;
   if ((rv = realloc(iPtrType, iByteSize)) == NULL)
   {
-    Fatal("realloc() failed.", "", 1);
+    assert.Fatal("realloc() failed.", "", 1);
   }
   return rv;
 }
 
-void Fatal(char* iS1, char* iS2, int n)
-{
-  fprintf(stderr, "Error : %s, %s\n", iS1, iS2);
-  exit(n);
-}
