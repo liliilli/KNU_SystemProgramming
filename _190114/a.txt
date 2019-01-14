@@ -1,0 +1,5 @@
+drwxr-xr-x 15 swedu root  4096  1월 14 09:10 ..
+drwxr-xr-x  2 swedu swedu 4096  1월 14 09:12 .
+-rw-r--r--  1 swedu swedu    0  1월 14 09:13 a.txt
+-rw-r--r--  1 swedu swedu  222  1월 14 09:12 b.txt
+total 12

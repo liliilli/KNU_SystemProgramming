@@ -1,0 +1,5 @@
+15468141 drwxr-xr-x 15 swedu root  4096  1월 14 09:10 ..
+15859743 drwxr-xr-x  2 swedu swedu 4096  1월 14 09:12 .
+15862876 -rw-r--r--  1 swedu swedu  210  1월 14 09:13 a.txt
+15862877 -rw-r--r--  1 swedu swedu    0  1월 14 09:13 b.txt
+total 12
