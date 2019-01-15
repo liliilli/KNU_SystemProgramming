@@ -1,5 +1,5 @@
 ///
-/// @file : timeserv.c
+/// @file : timeclnt.c
 /// @author : 2012104208 Jongmin Yun
 /// @datetime : 2019-01-15 
 /// @description : 
@@ -34,46 +34,39 @@ int main(int argc, char** argv)
   FILE*   socketFp = NULL;
   time_t  theTime;
 
+	char message[BUFSIZ];
+
 	// Step 1 : ask kernel for socket.
 	// Get a socket.
-	assert.MustSuccess((socketId = socket(PF_INET, SOCK_STREAM, 0)), "Failed to get a socket");
+	assert.MustSuccess((socketId = socket(AF_INET, SOCK_STREAM, 0)), "Failed to get a socket");
 
-	// Step 2 : bind address to socke.t Address is host, post.
-	// Clear out struct.
+	// Step 2 : connect to server 
+	// Need to build address (host, port) of server first.
 	bzero((void*)&sAddr, sizeof(sAddr));
+
 	// Get a host name of me.
-	gethostname(hostName, M_HOSTLEN);
-	sHp = gethostbyname(hostName);
+	sHp = gethostbyname(argv[1]);
+	M_ASSERT(sHp != NULL, "Failed to connect to server");
 
 	bcopy((void*)sHp->h_addr, (void*)&sAddr.sin_addr, sHp->h_length);
-	sAddr.sin_port = htons(M_PORTNUM);
+	sAddr.sin_port = htons(atoi(argv[2]));
 	sAddr.sin_family = AF_INET;
 
-	if (bind(socketId, (struct sockaddr*)&sAddr, sizeof(sAddr)) != 0)
+	if (connect(socketId, (struct sockaddr*)&sAddr, sizeof(sAddr)) != 0)
 	{
-		assert.Fatal("Bind", "Bind", 1);
+		assert.Fatal("Connect", "Connect", 1);
 	}
 
 	// Step 3 : allow incoming calls with Qsize = 1 on socket.
-	if (listen(socketId, 1) != 0) { assert.Fatal("Listen", "Listen", 1); }
+	int messageLen = read(socketId, message, BUFSIZ);
+	M_ASSERT(messageLen != -1, "Read error");
 
-	// Main loop
-	while (1)
+	if (write(1, message, messageLen) != messageLen)
 	{
-		// Wait for call.
-		socketFd = accept(socketId, NULL, NULL);
-		printf("Wow! got a call!\n");
-		M_ASSERT(socketFd != -1, "Accept");
-
-		socketFp = fdopen(socketFd, "w");
-		M_ASSERT(socketFp != NULL, "Fdopen");
-
-		theTime = time(NULL);
-		fprintf(socketFp, "The time here is...");
-		fprintf(socketFp, "%s", ctime(&theTime));
-		fclose(socketFp);
+		assert.Fatal("Write Error failed", "Write Error failed", 1);
 	}
 
+	close(socketId);
 	return 0;
 }
 

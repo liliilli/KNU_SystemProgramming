@@ -3,6 +3,8 @@ all :
 	make tinybc_debug
 	make timeserv
 	make timeserv_debug
+	make timeclnt
+	make timeclnt_debug
 
 M_HELPERMACRO  = HelperMacro.h
 M_HELPERGLOBAL = HelperGlobal.h HelperGlobal.c
@@ -22,6 +24,12 @@ timeserv : timeserv.c $(M_COMMON)
 
 timeserv_debug : timeserv.c $(M_COMMON) 
 	gcc -o $@ timeserv.c $(M_COMMON) 
+
+timeclnt: timeclnt.c $(M_COMMON) 
+	gcc $(O_OPT) $(O_RELEASE) -o $@ timeclnt.c $(M_COMMON) 
+
+timeclnt_debug : timeclnt.c $(M_COMMON) 
+	gcc -o $@ timeclnt.c $(M_COMMON) 
 
 clean:
 	rm tinybc
