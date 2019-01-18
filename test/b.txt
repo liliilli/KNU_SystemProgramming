@@ -1,0 +1,9 @@
+.
+..
+a.txt
+b.txt
+Makefile
+mydir
+mydir.c
+.mydir.c.swp
+mydir_d

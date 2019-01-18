@@ -1,0 +1,5 @@
+a.txt
+Makefile
+mydir
+mydir.c
+mydir_d
