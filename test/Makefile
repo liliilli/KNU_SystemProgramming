@@ -1,16 +1,35 @@
-all:
-	make mydir
-	make mydir_d
+all : 
+	make tinybc
+	make tinybc_debug
+	make timeserv
+	make timeserv_debug
+	make timeclnt
+	make timeclnt_debug
 
-RELEASE = -O2 -D NDEBUG
-STRICT = -Wextra -Wall -Werror
+M_HELPERMACRO  = HelperMacro.h
+M_HELPERGLOBAL = HelperGlobal.h HelperGlobal.c
+M_COMMON	= $(M_HELPERGLOBAL) $(M_HELPERMACRO)
+O_STRICT	= -Werror -Wall -Wextra
+O_RELEASE = -D NDEBUG
+O_OPT			= -O2
 
-mydir: mydir.c
-	gcc $(RELEASE) $(STRICT) -o $@ mydir.c
+tinybc : tinybc.c $(M_COMMON) 
+	gcc $(O_OPT) $(O_RELEASE) -o $@ tinybc.c $(M_COMMON) 
 
-mydir_d: mydir.c
-	gcc $(STRICT) -o $@ mydir.c
+tinybc_debug : tinybc.c $(M_COMMON) 
+	gcc -o $@ tinybc.c $(M_COMMON) 
+
+timeserv : timeserv.c $(M_COMMON) 
+	gcc $(O_OPT) $(O_RELEASE) -o $@ timeserv.c $(M_COMMON) 
+
+timeserv_debug : timeserv.c $(M_COMMON) 
+	gcc -o $@ timeserv.c $(M_COMMON) 
+
+timeclnt: timeclnt.c $(M_COMMON) 
+	gcc $(O_OPT) $(O_RELEASE) -o $@ timeclnt.c $(M_COMMON) 
+
+timeclnt_debug : timeclnt.c $(M_COMMON) 
+	gcc -o $@ timeclnt.c $(M_COMMON) 
 
 clean:
-	rm mydir
-	rm mydir_d
+	rm tinybc
